@@ -1,4 +1,0 @@
-LIBRARY grids.mxe
-
-EXPORTS
-	main

@@ -8,7 +8,9 @@ this github repo host the code for the C External that is the heart of the modul
 more info and download : http://motscousus.com/stuff/2014-09_Grids_for_Max4Live/
 
 to compile this code :
-download the Max/Msp SDK at : http://cycling74.com/downloads/sdk/
-put this repository into <SDKFolder>/examples/basics/
-and compile it with visual studio express 2013 or Xcode.
+
+- `cd` into `source/projects/grids` and and compile it with visual studio express 2013 or Xcode.
+
+- The max-sdk is embedded in this project and it structured as a package.
+
 
