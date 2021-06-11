@@ -9,8 +9,10 @@ more info and download : http://motscousus.com/stuff/2014-09_Grids_for_Max4Live/
 
 to compile this code :
 
-- `cd` into `source/projects/grids` and and compile it with visual studio express 2013 or Xcode.
+- `cd` into `source/projects/grids` and and compile it with xcode or visual studio.
 
-- The max-sdk is embedded in this project and it structured as a package.
+- Note that a partial max-sdk is embedded in this project to facilitate the compilation of the external.
+
+- Also note that the project is structured as a package.
 
 
