@@ -42,8 +42,9 @@ typedef struct _grids
 	t_atom   val;
 	t_symbol *name;
 
-	t_uint8 kNumParts;
-	t_uint8 kStepsPerPattern;
+    // constants
+	t_uint8 num_parts;
+	t_uint8 steps_per_pattern;
 
 	//parameters
 	t_uint8 mode;
@@ -153,8 +154,8 @@ void *grids_new(t_symbol *s, long argc, t_atom *argv)
 		g->outlet_kick_gate = intout((t_object *)g);
 
 		//configuration
-		g->kNumParts = 3;
-		g->kStepsPerPattern = 32;
+		g->num_parts = 3;
+		g->steps_per_pattern = 32;
 
 		//parameters
 		g->map_x = 64;
@@ -302,7 +303,7 @@ void grids_run(t_grids *g, long playHead) {
 	grids_output(g);
 
 	//increment euclidian clock.
-	for (int i = 0; i < g->kNumParts; i++)
+	for (int i = 0; i < g->num_parts; i++)
 		g->euclidean_step[i] = (g->euclidean_step[i] + 1) % g->euclidean_length[i];
 	
 }
@@ -337,7 +338,7 @@ void grids_output(t_grids *g) {
 void grids_evaluate_drums(t_grids *g) {
 	// At the beginning of a pattern, decide on perturbation levels
 	if (g->step == 0) {
-		for (int i = 0; i < g->kNumParts; ++i) {
+		for (int i = 0; i < g->num_parts; ++i) {
 			t_uint8 randomness = g->randomness >> 2;
 #ifdef WIN_VERSION
 			unsigned int rand;
@@ -352,7 +353,7 @@ void grids_evaluate_drums(t_grids *g) {
 
 	t_uint8 instrument_mask = 1;
 	t_uint8 accent_bits = 0;
-	for (int i = 0; i < g->kNumParts; ++i) {
+	for (int i = 0; i < g->num_parts; ++i) {
 		t_uint8 level = grids_read_drum_map(g, i);
 		if (level < 255 - g->part_perturbation[i]) {
 			level += g->part_perturbation[i];
@@ -388,7 +389,7 @@ t_uint8 grids_read_drum_map(t_grids *g, t_uint8 instrument) {
 	t_uint8* c_map = drum_map[i][j + 1];
 	t_uint8* d_map = drum_map[i + 1][j + 1];
 
-	int offset = (instrument * g->kStepsPerPattern) + step;
+	int offset = (instrument * g->steps_per_pattern) + step;
 	t_uint8 a = a_map[offset];
 	t_uint8 b = b_map[offset];
 	t_uint8 c = c_map[offset];
@@ -407,7 +408,7 @@ void grids_evaluate_euclidean(t_grids *g) {
 	t_uint8 reset_bits = 0;
 	// Refresh only on sixteenth notes.
 	if (!(g->step & 1)) {
-		for (int i = 0; i < g->kNumParts; ++i) {
+		for (int i = 0; i < g->num_parts; ++i) {
 			g->velocities[i] = 100;
 			t_uint8 density = g->density[i] >> 2;
 			t_uint16 address = (g->euclidean_length[i] - 1) * 32 + density;
